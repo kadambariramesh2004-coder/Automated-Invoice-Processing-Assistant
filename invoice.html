@@ -1,0 +1,162 @@
+sudo mount -t efs -o tls fs-0c31342e85ba5afc2:/ efsm<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automated Invoice Processing Assistant</title>
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f3f4f6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    margin-top: 25px;
+    color: #1e3a8a;
+  }
+  .container {
+    background: white;
+    padding: 25px;
+    margin-top: 20px;
+    width: 90%;
+    max-width: 650px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px dashed #60a5fa;
+    background: #eff6ff;
+    border-radius: 10px;
+  }
+  button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #1d4ed8;
+  }
+  .preview {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  table, th, td {
+    border: 1px solid #d1d5db;
+  }
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+  .ocr-text {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #374151;
+    margin-top: 10px;
+    white-space: pre-wrap;
+  }
+  .typing {
+    border-right: 3px solid #2563eb;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink {
+    from, to { border-color: transparent; }
+    50% { border-color: #2563eb; }
+  }
+</style>
+</head>
+<body>
+
+<h1>🧾 Automated Invoice Processing Assistant</h1>
+<div class="container">
+  <p>Upload an invoice image and simulate OCR-based data extraction using Gen AI logic.</p>
+  <input type="file" id="fileInput" accept="image/*">
+  <button id="processBtn">🔍 Extract Details</button>
+
+  <div id="result" style="display:none;">
+    <h3>📄 Uploaded Invoice</h3>
+    <img id="preview" class="preview" src="" alt="">
+    <h3>🧠 Simulated OCR Text</h3>
+    <div id="ocrText" class="ocr-text">Running OCR — please wait...</div>
+
+    <h3>📋 Extracted Key Fields</h3>
+    <table>
+      <tr><th>Invoice Number</th><td id="invoiceNo">-</td></tr>
+      <tr><th>Invoice Date</th><td id="invoiceDate">-</td></tr>
+      <tr><th>Vendor / Supplier</th><td id="vendor">-</td></tr>
+      <tr><th>Total Amount</th><td id="amount">-</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+const fileInput = document.getElementById("fileInput");
+const result = document.getElementById("result");
+const preview = document.getElementById("preview");
+const ocrTextDiv = document.getElementById("ocrText");
+
+fileInput.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      preview.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+document.getElementById("processBtn").addEventListener("click", () => {
+  const file = fileInput.files[0];
+  if (!file) {
+    alert("Please upload an invoice image first!");
+    return;
+  }
+
+  result.style.display = "block";
+  ocrTextDiv.textContent = "Running OCR — please wait...";
+  ocrTextDiv.classList.add("typing");
+
+  // Simulate OCR delay
+  setTimeout(() => {
+    ocrTextDiv.classList.remove("typing");
+    const simulatedText = `
+      ABC Enterprises Pvt. Ltd.
+      Invoice No: INV-2025-1026
+      Date: 26/10/2025
+      Total: ₹18,250.00
+      Supplier: ABC Enterprises Pvt. Ltd.
+      Thank you for your business!
+    `;
+    ocrTextDiv.textContent = simulatedText;
+
+    // Extract key fields (mock logic)
+    document.getElementById("invoiceNo").textContent = "INV-2025-1026";
+    document.getElementById("invoiceDate").textContent = "26/10/2025";
+    document.getElementById("vendor").textContent = "ABC Enterprises Pvt. Ltd.";
+    document.getElementById("amount").textContent = "₹18,250.00";
+  }, 1500);
+});
+</script>
+
+</body>
+</html>
